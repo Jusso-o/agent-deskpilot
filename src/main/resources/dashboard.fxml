@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.deskpilot.agent.ui.DashboardController"
+      prefWidth="340" prefHeight="480"
+      styleClass="root-pane"
+      stylesheets="@style.css">
+
+    <!-- Titlebar -->
+    <HBox styleClass="titlebar" alignment="CENTER_LEFT" spacing="10">
+        <HBox spacing="6">
+            <Label styleClass="dot dot-red"/>
+            <Label styleClass="dot dot-yellow"/>
+            <Label styleClass="dot dot-green"/>
+        </HBox>
+        <Label text="DeskPilot Agent" styleClass="titlebar-text" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <VBox styleClass="body" spacing="0" VBox.vgrow="ALWAYS">
+
+        <!-- Logo -->
+        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="logo-row">
+            <Label styleClass="logo-icon" text="⬡"/>
+            <VBox>
+                <Label text="DeskPilot" styleClass="logo-title"/>
+                <Label text="Controle remoto seguro" styleClass="logo-sub"/>
+            </VBox>
+        </HBox>
+
+        <!-- Status -->
+        <HBox styleClass="status-bar" alignment="CENTER_LEFT" spacing="8">
+            <Label fx:id="statusDot" styleClass="status-dot-green"/>
+            <Label fx:id="statusText" text="Conectado" styleClass="status-text"/>
+        </HBox>
+
+        <!-- Stats -->
+        <GridPane hgap="8" vgap="8" styleClass="stat-grid">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+            </columnConstraints>
+
+            <VBox styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <Label text="FPS atual" styleClass="stat-label"/>
+                <Label fx:id="fpsLabel" text="24" styleClass="stat-value-green"/>
+            </VBox>
+            <VBox styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Label text="Qualidade" styleClass="stat-label"/>
+                <Label fx:id="qualityLabel" text="60%" styleClass="stat-value-green"/>
+            </VBox>
+            <VBox styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="Latência" styleClass="stat-label"/>
+                <Label fx:id="latencyLabel" text="--ms" styleClass="stat-value"/>
+            </VBox>
+            <VBox styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Clientes" styleClass="stat-label"/>
+                <Label fx:id="clientsLabel" text="0" styleClass="stat-value"/>
+            </VBox>
+        </GridPane>
+
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <Button text="Configurações" styleClass="btn-outline"
+                onAction="#onSettings" maxWidth="Infinity"
+                style="-fx-margin: 0 0 8 0;"/>
+        <Button fx:id="disconnectBtn" text="Desconectar"
+                styleClass="btn-danger" onAction="#onDisconnect"
+                maxWidth="Infinity"/>
+
+        <Label text="Minimizar fecha para a bandeja do sistema"
+               styleClass="tray-note"/>
+    </VBox>
+</VBox>

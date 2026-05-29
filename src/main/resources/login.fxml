@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.deskpilot.agent.ui.LoginController"
+      prefWidth="340" prefHeight="520"
+      styleClass="root-pane"
+      stylesheets="@style.css">
+
+    <!-- Titlebar -->
+    <HBox styleClass="titlebar" alignment="CENTER_LEFT" spacing="10">
+        <HBox spacing="6">
+            <Label styleClass="dot dot-red"/>
+            <Label styleClass="dot dot-yellow"/>
+            <Label styleClass="dot dot-green"/>
+        </HBox>
+        <Label text="DeskPilot Agent" styleClass="titlebar-text" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <!-- Body -->
+    <VBox styleClass="body" spacing="0" VBox.vgrow="ALWAYS">
+
+        <!-- Logo -->
+        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="logo-row">
+            <Label styleClass="logo-icon" text="⬡"/>
+            <VBox>
+                <Label text="DeskPilot" styleClass="logo-title"/>
+                <Label text="Controle remoto seguro" styleClass="logo-sub"/>
+            </VBox>
+        </HBox>
+
+        <!-- Status -->
+        <HBox styleClass="status-bar" alignment="CENTER_LEFT" spacing="8">
+            <Label fx:id="statusDot" styleClass="status-dot-red"/>
+            <Label fx:id="statusText" text="Desconectado" styleClass="status-text"/>
+        </HBox>
+
+        <!-- Form -->
+        <Label text="URL do relay" styleClass="form-label"/>
+        <TextField fx:id="relayUrlField" styleClass="form-input" promptText="ws://localhost:8080/relay"/>
+
+        <Label text="Usuário" styleClass="form-label"/>
+        <TextField fx:id="usernameField" styleClass="form-input" promptText="seu usuário"/>
+
+        <Label text="Senha" styleClass="form-label"/>
+        <PasswordField fx:id="passwordField" styleClass="form-input" promptText="••••••••"/>
+
+        <Button fx:id="connectBtn" text="Conectar" styleClass="btn-primary"
+                onAction="#onConnect" maxWidth="Infinity"/>
+
+        <Separator styleClass="divider"/>
+
+        <!-- Stream config -->
+        <Label text="Configurações de stream" styleClass="section-title"/>
+
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="slider-row">
+            <Label text="FPS" styleClass="slider-label" minWidth="60"/>
+            <Slider fx:id="fpsSlider" min="10" max="60" value="24"
+                    blockIncrement="1" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="fpsValue" text="24" styleClass="slider-val" minWidth="36"/>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="slider-row">
+            <Label text="Qualidade" styleClass="slider-label" minWidth="60"/>
+            <Slider fx:id="qualitySlider" min="10" max="100" value="60"
+                    blockIncrement="1" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="qualityValue" text="60%" styleClass="slider-val" minWidth="36"/>
+        </HBox>
+
+        <Label text="Minimizar fecha para a bandeja do sistema"
+               styleClass="tray-note"/>
+
+    </VBox>
+</VBox>
