@@ -8,8 +8,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -22,35 +22,42 @@ public class AgentApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        // Inicializa o backend
         AgentConfig  config       = new AgentConfig();
         AgentService agentService = new AgentService(config);
         AgentApplication.init(config, agentService);
 
-        // Carrega a tela inicial
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/login.fxml")
         );
         Parent root = loader.load();
 
+        // Remove barra padrão do Windows
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+
+        Scene scene = new Scene(root, 340, 560);
         primaryStage.setTitle("DeskPilot Agent");
-        primaryStage.setScene(new Scene(root, 340, 520));
+        primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
 
-        // Configura system tray
-        setupTray(primaryStage);
-
-        // Minimizar fecha para a bandeja
-        primaryStage.iconifiedProperty().addListener((obs, wasMin, isMin) -> {
-            if (isMin) {
-                Platform.runLater(() -> {
-                    primaryStage.hide();
-                });
+        // Arrastar janela com o mouse no titlebar
+        root.setOnMousePressed(e -> {
+            root.setUserData(new double[]{e.getSceneX(), e.getSceneY()});
+        });
+        root.setOnMouseDragged(e -> {
+            double[] offset = (double[]) root.getUserData();
+            if (offset != null) {
+                primaryStage.setX(e.getScreenX() - offset[0]);
+                primaryStage.setY(e.getScreenY() - offset[1]);
             }
         });
 
-        // Shutdown hook
+        setupTray(primaryStage, agentService);
+
+        primaryStage.iconifiedProperty().addListener((obs, wasMin, isMin) -> {
+            if (isMin) Platform.runLater(primaryStage::hide);
+        });
+
         primaryStage.setOnCloseRequest(e -> {
             agentService.stop();
             removeTray();
@@ -58,13 +65,11 @@ public class AgentApp extends Application {
         });
     }
 
-    private void setupTray(Stage stage) {
+    private void setupTray(Stage stage, AgentService agentService) {
         if (!SystemTray.isSupported()) return;
-
         try {
             Platform.setImplicitExit(false);
 
-            // Ícone simples — substituir por imagem real depois
             java.awt.image.BufferedImage img =
                     new java.awt.image.BufferedImage(16, 16,
                             java.awt.image.BufferedImage.TYPE_INT_ARGB);
@@ -74,17 +79,14 @@ public class AgentApp extends Application {
             g.dispose();
 
             PopupMenu popup = new PopupMenu();
-
             MenuItem showItem = new MenuItem("Abrir DeskPilot");
             showItem.addActionListener(e -> Platform.runLater(stage::show));
-
             MenuItem exitItem = new MenuItem("Sair");
             exitItem.addActionListener(e -> {
-                AgentApplication.getAgentService().stop();
+                agentService.stop();
                 removeTray();
                 Platform.exit();
             });
-
             popup.add(showItem);
             popup.addSeparator();
             popup.add(exitItem);
@@ -94,23 +96,19 @@ public class AgentApp extends Application {
             trayIcon.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 2) {
+                    if (e.getClickCount() == 2)
                         Platform.runLater(stage::show);
-                    }
                 }
             });
-
             SystemTray.getSystemTray().add(trayIcon);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void removeTray() {
-        if (trayIcon != null) {
+        if (trayIcon != null)
             SystemTray.getSystemTray().remove(trayIcon);
-        }
     }
 
     public static void main(String[] args) {

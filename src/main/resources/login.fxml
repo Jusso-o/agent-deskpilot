@@ -5,24 +5,26 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.deskpilot.agent.ui.LoginController"
-      prefWidth="340" prefHeight="520"
+      prefWidth="340" prefHeight="560"
       styleClass="root-pane"
       stylesheets="@style.css">
 
-    <!-- Titlebar -->
     <HBox styleClass="titlebar" alignment="CENTER_LEFT" spacing="10">
         <HBox spacing="6">
             <Label styleClass="dot dot-red"/>
             <Label styleClass="dot dot-yellow"/>
             <Label styleClass="dot dot-green"/>
         </HBox>
-        <Label text="DeskPilot Agent" styleClass="titlebar-text" HBox.hgrow="ALWAYS"/>
+        <Label text="DeskPilot Agent" styleClass="titlebar-text" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <HBox spacing="4">
+            <Button text="—" styleClass="titlebar-btn" onAction="#onMinimize"/>
+            <Button text="✕" styleClass="titlebar-btn-close" onAction="#onClose"/>
+        </HBox>
     </HBox>
 
-    <!-- Body -->
     <VBox styleClass="body" spacing="0" VBox.vgrow="ALWAYS">
 
-        <!-- Logo -->
         <HBox spacing="10" alignment="CENTER_LEFT" styleClass="logo-row">
             <Label styleClass="logo-icon" text="⬡"/>
             <VBox>
@@ -31,28 +33,29 @@
             </VBox>
         </HBox>
 
-        <!-- Status -->
         <HBox styleClass="status-bar" alignment="CENTER_LEFT" spacing="8">
             <Label fx:id="statusDot" styleClass="status-dot-red"/>
             <Label fx:id="statusText" text="Desconectado" styleClass="status-text"/>
         </HBox>
 
-        <!-- Form -->
         <Label text="URL do relay" styleClass="form-label"/>
-        <TextField fx:id="relayUrlField" styleClass="form-input" promptText="ws://localhost:8080/relay"/>
+        <TextField fx:id="relayUrlField" promptText="ws://localhost:8080/relay"/>
 
         <Label text="Usuário" styleClass="form-label"/>
-        <TextField fx:id="usernameField" styleClass="form-input" promptText="seu usuário"/>
+        <TextField fx:id="usernameField" promptText="seu usuário"/>
 
         <Label text="Senha" styleClass="form-label"/>
-        <PasswordField fx:id="passwordField" styleClass="form-input" promptText="••••••••"/>
+        <PasswordField fx:id="passwordField" promptText="••••••••"/>
 
         <Button fx:id="connectBtn" text="Conectar" styleClass="btn-primary"
-                onAction="#onConnect" maxWidth="Infinity"/>
+                onAction="#onConnect" maxWidth="Infinity">
+            <VBox.margin><Insets top="20"/></VBox.margin>
+        </Button>
 
-        <Separator styleClass="divider"/>
+        <Separator styleClass="divider">
+            <VBox.margin><Insets top="16" bottom="4"/></VBox.margin>
+        </Separator>
 
-        <!-- Stream config -->
         <Label text="Configurações de stream" styleClass="section-title"/>
 
         <HBox alignment="CENTER_LEFT" spacing="10" styleClass="slider-row">
@@ -69,8 +72,7 @@
             <Label fx:id="qualityValue" text="60%" styleClass="slider-val" minWidth="36"/>
         </HBox>
 
-        <Label text="Minimizar fecha para a bandeja do sistema"
-               styleClass="tray-note"/>
+        <Label text="Minimizar fecha para a bandeja do sistema" styleClass="tray-note"/>
 
     </VBox>
 </VBox>

@@ -71,6 +71,17 @@ public class LoginController implements Initializable {
     }
 
     @FXML
+    private void onClose() {
+        Platform.exit();
+    }
+
+    @FXML
+    private void onMinimize() {
+        Stage stage = (Stage) relayUrlField.getScene().getWindow();
+        stage.hide();
+    }
+
+    @FXML
     private void onConnect() {
         String relayUrl = relayUrlField.getText().trim();
         String username = usernameField.getText().trim();

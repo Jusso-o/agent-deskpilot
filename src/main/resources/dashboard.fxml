@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.deskpilot.agent.ui.DashboardController"
@@ -8,19 +9,22 @@
       styleClass="root-pane"
       stylesheets="@style.css">
 
-    <!-- Titlebar -->
     <HBox styleClass="titlebar" alignment="CENTER_LEFT" spacing="10">
         <HBox spacing="6">
             <Label styleClass="dot dot-red"/>
             <Label styleClass="dot dot-yellow"/>
             <Label styleClass="dot dot-green"/>
         </HBox>
-        <Label text="DeskPilot Agent" styleClass="titlebar-text" HBox.hgrow="ALWAYS"/>
+        <Label text="DeskPilot Agent" styleClass="titlebar-text" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <HBox spacing="4">
+            <Button text="—" styleClass="titlebar-btn" onAction="#onMinimize"/>
+            <Button text="✕" styleClass="titlebar-btn-close" onAction="#onClose"/>
+        </HBox>
     </HBox>
 
     <VBox styleClass="body" spacing="0" VBox.vgrow="ALWAYS">
 
-        <!-- Logo -->
         <HBox spacing="10" alignment="CENTER_LEFT" styleClass="logo-row">
             <Label styleClass="logo-icon" text="⬡"/>
             <VBox>
@@ -29,19 +33,16 @@
             </VBox>
         </HBox>
 
-        <!-- Status -->
         <HBox styleClass="status-bar" alignment="CENTER_LEFT" spacing="8">
             <Label fx:id="statusDot" styleClass="status-dot-green"/>
             <Label fx:id="statusText" text="Conectado" styleClass="status-text"/>
         </HBox>
 
-        <!-- Stats -->
-        <GridPane hgap="8" vgap="8" styleClass="stat-grid">
+        <GridPane hgap="8" vgap="8" styleClass="stat-grid" maxWidth="Infinity">
             <columnConstraints>
                 <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
                 <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
             </columnConstraints>
-
             <VBox styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
                 <Label text="FPS atual" styleClass="stat-label"/>
                 <Label fx:id="fpsLabel" text="24" styleClass="stat-value-green"/>
@@ -63,8 +64,10 @@
         <Region VBox.vgrow="ALWAYS"/>
 
         <Button text="Configurações" styleClass="btn-outline"
-                onAction="#onSettings" maxWidth="Infinity"
-                style="-fx-margin: 0 0 8 0;"/>
+                onAction="#onSettings" maxWidth="Infinity">
+            <VBox.margin><Insets bottom="8"/></VBox.margin>
+        </Button>
+
         <Button fx:id="disconnectBtn" text="Desconectar"
                 styleClass="btn-danger" onAction="#onDisconnect"
                 maxWidth="Infinity"/>

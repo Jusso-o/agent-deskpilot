@@ -44,6 +44,18 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
+    private void onClose() {
+        AgentApplication.getAgentService().stop();
+        Platform.exit();
+    }
+
+    @FXML
+    private void onMinimize() {
+        Stage stage = (Stage) statusText.getScene().getWindow();
+        stage.hide();
+    }
+
+    @FXML
     private void onDisconnect() {
         agentService.stop();
         AgentApplication.getConfig().clearToken();
